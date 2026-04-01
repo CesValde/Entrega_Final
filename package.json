@@ -1,0 +1,19 @@
+{
+   "name": "entrega_final",
+   "version": "1.0.0",
+   "description": "Entrega Final\r Dockerizando nuestro Proyecto\r Objetivos generales",
+   "main": "app.js",
+   "type": "module",
+   "scripts": {
+      "test": "echo \"Error: no test specified\" && exit 1"
+   },
+   "keywords": [],
+   "author": "",
+   "license": "ISC",
+   "dependencies": {
+      "@faker-js/faker": "^10.3.0",
+      "bcrypt": "^6.0.0",
+      "express": "^5.2.1",
+      "mogoose": "^0.0.1-security"
+   }
+}
