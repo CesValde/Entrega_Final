@@ -1,3 +1,9 @@
+import { Router } from "express"
+import { passportCall } from "../middleware/auth.middleware.js"
+import * as userController from "../controllers/users.controller.js"
+
+const router = Router()
+
 /**
  * @swagger
  * tags:
@@ -158,3 +164,5 @@ router.put("/:uid", passportCall("current"), userController.updateUser)
  *         description: Usuario eliminado
  */
 router.delete("/:uid", passportCall("current"), userController.deleteUser)
+
+export default router
