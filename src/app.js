@@ -5,8 +5,13 @@ import express from "express"
 import cookieParser from "cookie-parser"
 
 // import routes
-import mocksRouter from "./routes/mocks.router.js"
+// import mocksRouter from "./routes/mocks.router.js"
+
 import usersRouter from "./routes/users.route.js"
+import sessionRouter from "./routes/session.route.js"
+import authUserRouter from "./routes/authUser.route.js"
+import petsRouter from "./routes/pets.route.js"
+import adoptionsRouter from "./routes/adoptions.route.js"   
 
 // config server
 import { connectAtlasMongoDB } from "./config/auth.config.js"
@@ -32,9 +37,15 @@ async function startServer() {
    try {
       await connectAtlasMongoDB()
 
-      // routes
+      // ver si la uso
       app.use("/api/mocks", mocksRouter)
+
+      // routes
       app.use("/api/users", usersRouter)
+      app.use("/api/sessions", sessionRouter)
+      app.use("/api/authUser", authUserRouter)
+      app.use("/api/pets", petsRouter)
+      app.use("/api/adoptions", adoptionsRouter)
 
       app.listen(PORT, () =>
          console.log(`EntregaFinal http://localhost:${PORT}`)
