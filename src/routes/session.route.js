@@ -13,6 +13,16 @@ const router = Router()
 
 /**
  * @swagger
+ * components:
+ *   securitySchemes:
+ *     cookieAuth:
+ *       type: apiKey
+ *       in: cookie
+ *       name: currentUser
+ */
+
+/**
+ * @swagger
  * /api/sessions/profile:
  *   get:
  *     summary: Obtener perfil del usuario autenticado
