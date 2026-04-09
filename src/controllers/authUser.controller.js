@@ -18,13 +18,21 @@ export const submitLogin = async (req, res) => {
          config.jwtSecret,
          { expiresIn: "24h" }
       )
+
       res.cookie("currentUser", token, {
          httpOnly: true,
-         signed: true,
+         signed: true,     // Para que no se pueda modificar desde el cliente
          maxAge: 24 * 60 * 60 * 1000
       })
 
-      return res.redirect("/api/session/profile")
+      return res.status(200).json({
+         message: "Login successful",
+         payload: {
+            id: user._id,
+            email: user.email,
+            role: user.role
+         }
+      })
    } catch (error) {
       return res.status(error.statusCode || 500).json({
          error: error.statusCode ? error.message : "Internal server error"
@@ -32,7 +40,7 @@ export const submitLogin = async (req, res) => {
    }
 }
 
-// esto es para probar si se cerro la sesion y ver si estoy en el login
+// Esto simula la vista del login, si el usuario ya tiene cookie lo redirige a su perfil, sino le muestra el formulario de login
 export const login = async (req, res) => {
    try {
       return res.status(200).json({
