@@ -24,4 +24,6 @@ const adoptionSchema = new Schema(
 )
 
 // "adoptions" = nombre del model (y colección en MongoDB)
-export const adoptionModel = mongoose.model("adoptions", adoptionSchema)
+const adoptionModel = mongoose.model("adoptions", adoptionSchema)
+
+export default adoptionModel
