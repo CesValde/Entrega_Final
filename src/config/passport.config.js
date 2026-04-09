@@ -1,6 +1,6 @@
 import passport from "passport"
 import jwt from "passport-jwt"
-import { userModel } from "../models/user.model.js"
+import userModel from "../models/user.model.js"
 
 const JWTStrategy = jwt.Strategy
 const ExtractJWT = jwt.ExtractJwt
