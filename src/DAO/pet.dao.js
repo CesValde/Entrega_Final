@@ -1,4 +1,4 @@
-import { petModel } from "../models/pet.model.js"
+import petModel from "../models/pet.model.js"
 
 class PetsDAO {
    async getAll() {
