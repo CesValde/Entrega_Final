@@ -1,4 +1,4 @@
-import petDAO from "../daos/pet.dao.js"
+import petDAO from "../DAO/pet.dao.js"
 
 class PetRepository {
    async getAll() {

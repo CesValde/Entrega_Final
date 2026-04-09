@@ -1,4 +1,4 @@
-import AdoptionsDAO from "../daos/adoption.dao.js"
+import AdoptionsDAO from "../DAO/adoption.dao.js"
 
 class AdoptionRepository {
    async getAll() {
