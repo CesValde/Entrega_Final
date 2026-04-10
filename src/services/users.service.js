@@ -54,6 +54,12 @@ class UserService {
             throw new AppError("Missing values", 400)
          }
 
+         const existingUser = await userRepository.getByEmail(email)
+
+         if (existingUser) {
+            throw new AppError("Email already in use", 400)
+         }
+
          const hashedPassword = await bcrypt.hash(password, 10)
 
          const userToCreate = {
