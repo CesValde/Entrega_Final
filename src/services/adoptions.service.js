@@ -2,6 +2,9 @@ import AdoptionRepository from "../repositories/adoption.repository.js"
 import AppError from "../error/error.js"
 import mongoose from "mongoose"
 
+import UserService from "../services/users.service.js"
+import PetService from "../services/pets.service.js"
+
 class AdoptionService {
    async getAll() {
       try {
@@ -53,26 +56,43 @@ class AdoptionService {
 
    async create(adoption) {
       try {
-         const { first_name, last_name, email, password, age, role } = adoption
+         const { user, pet, status } = adoption
 
-         if (!first_name || !last_name || !email || !password || age == null) {
+         if (!user || !pet) {
             throw new AppError("Missing values", 400)
          }
 
-         const hashedPassword = await bcrypt.hash(password, 10)
-
-         const adoptionToCreate = {
-            first_name,
-            last_name,
-            email,
-            age: Number(age),
-            role: role ?? "adoption",
-            password: hashedPassword
+         if (status && !["pending", "approved", "rejected"].includes(status)) {
+            throw new AppError("Invalid status value", 400)
          }
 
-         const adoptionCreate =
-            await AdoptionRepository.create(adoptionToCreate)
-         return adoptionCreate
+         const userExists = await UserService.getById(user)
+         if (!userExists) {
+            throw new AppError("User not found", 404)
+         }
+
+         const petExists = await PetService.getById(pet)
+         if (!petExists) {
+            throw new AppError("Pet not found", 404)
+         }
+
+         if (petExists.status === "adopted") {
+            throw new AppError("Pet is already adopted", 400)
+         }
+
+         const adoptionToCreate = {
+            user,
+            pet,
+            status: status || "pending"
+         }
+
+         let adoptionResult = await AdoptionRepository.create(adoptionToCreate)
+
+         // update the user to add the adopted pet to their list of pets
+         UserService.update(user, { $push: { pets: pet } })
+         adoptionResult = await this.completeAdoption(adoptionResult._id, pet)
+
+         return adoptionResult
       } catch (error) {
          if (error instanceof AppError) throw error
          throw new AppError("Database error", 500)
@@ -89,26 +109,35 @@ class AdoptionService {
             throw new AppError("No data to update", 400)
          }
 
-         // if password comming reject the request
-         if (data.password) {
-            throw new AppError("Password cannot be updated here", 400)
-         }
-
          const updatedAdoption = await AdoptionRepository.update(id, data, {
             new: true,
             runValidators: true
          })
 
          if (!updatedAdoption) {
-            throw new AppError("User not found", 404)
+            throw new AppError("Adoption not found", 404)
          }
 
-         return updatedUser
+         return updatedAdoption
       } catch (error) {
-         console.log(error)
          if (error instanceof AppError) throw error
          throw new AppError("Database error", 500)
       }
+   }
+
+   async completeAdoption(aid, pid) {
+      const adoption = await AdoptionRepository.getById(aid)
+
+      if (!adoption) {
+         throw new AppError("Adoption not found", 404)
+      }
+
+      adoption.status = "approved"
+
+      // update the pet status to adopted
+      await PetService.update(pid, { status: "adopted" })
+
+      return await adoption.save()
    }
 
    async delete(id) {
@@ -120,7 +149,7 @@ class AdoptionService {
          const adoption = await AdoptionRepository.delete(id)
 
          if (!adoption) {
-            throw new AppError("User not found", 404)
+            throw new AppError("Adoption not found", 404)
          }
 
          return adoption
