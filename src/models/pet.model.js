@@ -13,6 +13,11 @@ const petSchema = new mongoose.Schema(
       age: {
          type: Number,
          required: true
+      },
+      status: {
+         type: String,
+         enum: ["available", "adopted"],
+         default: "available"
       }
    },
    {
