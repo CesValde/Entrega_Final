@@ -88,7 +88,7 @@ router.get("/:uid", passportCall("current"), userController.getUserById)
  *       400:
  *         description: Error en datos
  */
-router.post("/", passportCall("current"), userController.saveUser)
+router.post("/", userController.saveUser)
 
 /**
  * @swagger
