@@ -1,5 +1,7 @@
 import { expect } from "chai"
 import request from "supertest"
+import mongoose from "mongoose"
+import AppError from "../error/error.js"
 import app from "../app.js"
 
 const requester = request(app)
@@ -97,6 +99,16 @@ describe("Testing Adoptions Router", function () {
       expect(res.body.payload.id).to.equal(adoptionId)
    })
 
+   // get adoption by id test and populated data
+   it("GET /api/adoptions/populate/:aid - obtener por id", async () => {
+      const res = await requester
+         .get(`/api/adoptions/populate/${adoptionId}`)
+         .set("Cookie", cookie)
+
+      expect(res.status).to.equal(200)
+      expect(res.body.payload.id).to.equal(adoptionId)
+   })
+
    // update adoption status test
    it("PUT /api/adoptions/:aid - actualizar status", async () => {
       const res = await requester
@@ -128,10 +140,11 @@ describe("Testing Adoptions Router", function () {
 
    // get adoption by id with invalid id
    it("GET /api/adoptions/:aid - id inexistente", async () => {
+      const invalidId123 = "123"
       const res = await requester
-         .get("/api/adoptions/invalidId123")
+         .get(`/api/adoptions/${invalidId123}`)
          .set("Cookie", cookie)
 
-      expect(res.status).to.equal(404)
+      expect(res.status).to.equal(400)
    })
 })
