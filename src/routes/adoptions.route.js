@@ -104,7 +104,7 @@ router.get(
  *         description: No autorizado
  */
 router.get(
-   "/:aid",
+   "/populate/:aid",
    passportCall("current"),
    adoptionsController.getAdoptionByIdByPopulated
 )
