@@ -30,10 +30,10 @@ export const getAdoptionByIdByPopulated = async (req, res) => {
 }
 
 export const getAdoptionById = async (req, res) => {
-   const { uid } = req.params
+   const { aid } = req.params
 
    try {
-      const adoptions = await adoptionsService.getById(uid)
+      const adoptions = await adoptionsService.getById(aid)
       return res.status(200).json({
          payload: adoptionsDTO.fromDB(adoptions)
       })
@@ -96,10 +96,10 @@ export const completeAdoption = async (req, res, next) => {
 }
 
 export const deleteAdoption = async (req, res) => {
-   const { uid } = req.params
+   const { aid } = req.params
 
    try {
-      const adoptions = await adoptionsService.delete(uid)
+      const adoptions = await adoptionsService.delete(aid)
       const adoptionsDelete = adoptionsDTO.fromDB(adoptions)
 
       return res.status(200).json({
