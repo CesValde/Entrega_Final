@@ -10,9 +10,12 @@ Permite administrar usuarios, mascotas y adopciones, implementando autenticació
 - Node.js
 - Express.js
 - MongoDB + Mongoose
+- Passport.js (autenticación middleware)
 - JWT (autenticación con cookies)
+- bcrypt
 - Docker
-- Mocha + Chai
+- Mocha + Chai (unit testing)
+- Swagger / OpenAPI (documentación de API REST)
 - GitHub Actions
 
 ---
