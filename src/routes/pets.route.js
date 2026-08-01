@@ -46,7 +46,7 @@ router.get("/", passportCall("current"), petController.getAllPets)
  *     security:
  *       - cookieAuth: []
  *     parameters:
- *       -name: pid
+ *       - name: pid
  *         in: path
  *         required: true
  *         description: ID de la mascota
@@ -98,7 +98,7 @@ router.post("/", passportCall("current"), petController.savePet)
  *     security:
  *       - cookieAuth: []
  *     parameters:
- *       -name: pid
+ *       - name: pid
  *         in: path
  *         required: true
  *         schema:
@@ -123,7 +123,7 @@ router.put("/:pid", passportCall("current"), petController.updatePet)
  *     security:
  *       - cookieAuth: []
  *     parameters:
- *       -name: pid
+ *       - name: pid
  *         in: path
  *         required: true
  *         schema:
